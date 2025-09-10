@@ -1,0 +1,29 @@
+# Basic Kakoune configuration
+# This file is bundled with the wrapped kakoune package
+
+# Set tabstop and indent width
+set-option global tabstop 4
+set-option global indentwidth 4
+
+# Enable line numbers
+add-highlighter global/ number-lines -relative
+
+# Enable syntax highlighting for common languages
+add-highlighter global/ show-matching
+
+# Set a colorscheme (assuming default is available)
+colorscheme default
+
+# Basic key mappings (example)
+# map global normal <c-s> ':write<ret>'  # Save with Ctrl+S
+
+# Hook to set filetype for certain files
+hook global BufCreate .*\.(c|cpp|cc|cxx|C) %{
+    set-option buffer filetype c
+}
+
+hook global BufCreate .*\.(py) %{
+    set-option buffer filetype python
+}
+
+# Add more configurations as needed

@@ -236,4 +236,10 @@ hook global WinSetOption filetype=rust %{
 
 hook global WinSetOption filetype=(asciidoc|markdown) %{
   set-option window lintcmd "proselint"
+  add-highlighter -override global/markdown-wrap wrap -word
+
+  hook -once -always window WinSetOption filetype=.* %{
+    remove-highlighter global/markdown-wrap
+  }
 }
+

@@ -1,6 +1,10 @@
-{ symlinkJoin, kakoune-wrapped }:
+{ symlinkJoin
+, kakoune-wrapped
+,
+}:
 symlinkJoin {
   name = "kakoune-flake";
-  paths = [ kakoune-wrapped ];
+  paths = [
+    kakoune-wrapped
+  ];
 }
-

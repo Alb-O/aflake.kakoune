@@ -1,17 +1,37 @@
-{
-  inputs,
-  lib,
-  system,
-  ...
+{ inputs
+, lib
+, system
+, ...
 }@pkgs:
 let
   # Use full nixpkgs for wrapper-manager eval
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
+  haveFiletypes = builtins.pathExists ./filetypes;
 
-  # Create a package containing the kakrc config
-  config = fullPkgs.runCommand "kakoune-config" {} ''
-    mkdir -p $out/share/kak
-    cp ${./kakrc} $out/share/kak/kakrc
+  # Create a package containing Kakoune config and any local addons
+  config = fullPkgs.runCommand "kakoune-config" { } ''
+    set -eu
+    outdir=$out/share/kak
+    mkdir -p "$outdir/colors" "$outdir/plugins" "$outdir/filetypes"
+
+    # Main config
+    install -Dm444 ${./kakrc} "$outdir/kakrc"
+
+    # Copy all .kak colors and plugins recursively; flatten filenames
+    while IFS= read -r f; do
+      install -Dm444 "$f" "$outdir/colors/$(basename "$f")"
+    done < <(find ${./colors} -type f -name '*.kak' -print)
+
+    while IFS= read -r f; do
+      install -Dm444 "$f" "$outdir/plugins/$(basename "$f")"
+    done < <(find ${./plugins} -type f -name '*.kak' -print)
+
+    # Optional: ship filetype helpers if present
+    ${lib.optionalString haveFiletypes ''
+    while IFS= read -r f; do
+      install -Dm444 "$f" "$outdir/filetypes/$(basename "$f")"
+    done < <(find ${./filetypes} -type f -name '*.kak' -print)
+    ''}
   '';
 
   # A tiny launcher for kakoune
@@ -29,11 +49,25 @@ let
           wrapperType = "shell";
           # Use our custom launcher as the primary binary, but also ship upstream
           basePackage = kakouneLauncher;
-          extraPackages = [ fullPkgs.kakoune config ];
+          extraPackages = [
+            fullPkgs.kakoune
+            config
+            # LSP client and servers
+            fullPkgs.kakoune-lsp
+            fullPkgs.rust-analyzer
+            fullPkgs.nil
+            fullPkgs.marksman
+            fullPkgs.nodePackages_latest.typescript-language-server
+            fullPkgs.nodePackages_latest.typescript
+            fullPkgs.vscode-langservers-extracted
+            fullPkgs.tailwindcss-language-server
+            fullPkgs.wl-clipboard
+          ];
 
-          # Set environment variables for kakoune
+          # Point Kakoune to this flake's config directory explicitly.
+          # Using KAKOUNE_CONFIG_DIR avoids depending on a user's XDG_CONFIG_HOME.
           env = {
-            XDG_CONFIG_HOME.value = "${config}/share";
+            KAKOUNE_CONFIG_DIR.value = "${config}/share/kak";
           };
         };
       }

@@ -1,29 +1,240 @@
-# Basic Kakoune configuration
-# This file is bundled with the wrapped kakoune package
+################################################################################
+# Options
 
-# Set tabstop and indent width
-set-option global tabstop 4
-set-option global indentwidth 4
+# use the Gruvdark colorscheme from this flake
+colorscheme gruvdark
+# show matching symbols
+add-highlighter -override global/ show-matching
+# always keep eight lines and three columns displayed around the cursor
+set-option global scrolloff 8,3
 
-# Enable line numbers
-add-highlighter global/ number-lines -relative
+set global tabstop 2
+set global indentwidth 2
 
-# Enable syntax highlighting for common languages
-add-highlighter global/ show-matching
+# use spaces instead of tabs
+map global insert <tab> '<a-;><gt>'
+map global insert <s-tab> '<a-;><lt>'
+hook global InsertChar \t %{ try %{
+  execute-keys -draft h %opt{indentwidth}@
+} }
 
-# Set a colorscheme (assuming default is available)
-colorscheme default
+# allways remove trailing whitespace
+hook global BufWritePre .* %{ try %{ execute-keys -draft \%s\h+$<ret>d } }
 
-# Basic key mappings (example)
-# map global normal <c-s> ':write<ret>'  # Save with Ctrl+S
+# line numbers on by default (named highlighter for easy toggling)
+hook global WinCreate .* %{ add-highlighter -override window/line-numbers number-lines }
 
-# Hook to set filetype for certain files
-hook global BufCreate .*\.(c|cpp|cc|cxx|C) %{
-    set-option buffer filetype c
+# use ripgrep as regex search tool
+set global grepcmd 'rg --column'
+
+alias global qa kill
+
+# use i3 instead of kitty for window management
+hook global ModuleLoaded kitty %{
+  set global kitty_window_type 'os-window'
 }
 
-hook global BufCreate .*\.(py) %{
-    set-option buffer filetype python
+################################################################################
+# load plugins
+
+evaluate-commands %sh{
+  autoload_directory() {
+    find -L "$1" -maxdepth 3 -type f -name '*\.kak' \
+      -exec printf 'try %%{ source "%s" } catch %%{ echo -debug Autoload: could not load "%s" }\n' '{}' '{}' \;
+  }
+
+  autoload_directory ${kak_config}/filetypes/
+
+  autoload_directory ${kak_config}/plugins/
 }
 
-# Add more configurations as needed
+################################################################################
+# Plugin configuration
+
+# Enable language server
+eval %sh{kak-lsp --kakoune -s $kak_session}
+# Enable LSP for common languages
+hook global WinSetOption filetype=(rust|nix|javascript|typescript|tsx|jsx|markdown) %{
+  lsp-enable-window
+}
+set global lsp_file_watch_support true
+
+set global lsp_insert_spaces true
+
+# Inline diagnostics (shows diagnostics at line end)
+lsp-inlay-diagnostics-enable global
+
+# Add Tailwind alongside TS/JS server
+hook global BufSetOption filetype=(?:javascript|typescript|jsx|tsx) %{
+  set-option buffer lsp_servers %{
+    [typescript-language-server]
+    root_globs = ["package.json", "tsconfig.json", "jsconfig.json", ".git", ".hg"]
+    args = ["--stdio"]
+    [tailwindcss-language-server]
+    root_globs = ["tailwind.*", "tailwind.config.*", "tailwind.config.ts", "tailwind.config.js"]
+    args = ["--stdio"]
+  }
+}
+
+evaluate-commands %sh{
+  kcr init kakoune
+}
+
+
+################################################################################
+# Mappings
+
+# X extends lines
+map -docstring 'extend lines downwards' global normal X %{<a-:>F<ret>x}
+map -docstring 'extend lines upwards' global normal <a-X> %{<a-:><a-;><a-H>Kx}
+
+# Setup vertical selection mappings
+map -docstring "select pattern down" global user v :vertical-selection-down<ret>
+map -docstring "select pattern up" global user <a-v> :vertical-selection-up<ret>
+map -docstring "select both directions" global user V :vertical-selection-up-and-down<ret>
+
+map -docstring "send selection to repl window" global user s <esc>:send-text<ret>
+map -docstring "load your kakrc" global user R <esc>:source<space>~/.config/kak/kakrc<ret>
+
+# clipboard interaction (Wayland)
+# y: copy selection to system clipboard without modifying buffer
+define-command copy-to-clipboard -docstring 'copy selection to wayland clipboard' %{
+  execute-keys '<a-|>wl-copy -n<ret>'
+  echo -markup '{Information}copied selection to clipboard'
+}
+map global user y -docstring 'copy to clipboard' ': copy-to-clipboard<ret>'
+# p: paste clipboard after / P: before
+map global user p -docstring 'paste (after) from clipboard' '<a-!>wl-paste -n<ret>'
+map global user P -docstring 'paste (before) from clipboard' '!wl-paste -n<ret>'
+# r: replace current selection with clipboard content
+map global user r -docstring 'replace from clipboard' '|wl-paste -n<ret>'
+
+# toggle line numbers
+define-command toggle-line-numbers -docstring 'toggle line numbers' %{
+  try %{
+    remove-highlighter window/line-numbers
+    echo -markup '{Information}line numbers off'
+  } catch %{
+    add-highlighter window/line-numbers number-lines
+    echo -markup '{Information}line numbers on'
+  }
+}
+map -docstring "toggle line numbers" global user l ': toggle-line-numbers<ret>'
+
+# window and view manipulation
+map global normal <c-w> V
+map -docstring "open new window" global view n <esc>:new<ret>
+map -docstring "open new window in vertical split" global view v "<esc>:kitty-split-vertical kak -c %val{session}<ret>"
+map -docstring "open new window in horizontal split" global view s "<esc>:kitty-split-horizontal kak -c %val{session}<ret>"
+map -docstring "close current window" global view c <esc>:quit<ret>
+
+# goto bindings
+map global goto K -docstring "your kakrc" '<esc>:edit!<space>~/.config/kak/kakrc<ret>'
+map global goto B -docstring "select buffer" '<esc>: connect terminal kcr-fzf-buffers<ret>'
+map global goto f -docstring "select file" '<esc>: connect terminal kcr-fzf-files<ret>'
+
+# toggle case on ~
+map global normal ~ <a-`>
+
+# Select xml object tags with object selection
+map -docstring "xml tag objet" global object t %{c<lt>([\w.]+)\b[^>]*?(?<lt>!/)>,<lt>/([\w.]+)\b[^>]*?(?<lt>!/)><ret>}
+
+# lsp menu
+map global normal <c-l> ': enter-user-mode lsp<ret>'
+
+map global normal <c-t> '<esc>: connect terminal elvish<ret>'
+
+# fuzzy finding
+try %{ declare-user-mode fzf } catch %{ echo -markup "{Error}Can't declare mode 'fzf' - already exists" }
+map global normal <c-p> '<esc>: enter-user-mode fzf<ret>'
+map global fzf -docstring "find file with grep" 'g' '<esc>: connect terminal kcr-fzf-grep<ret>'
+map global fzf -docstring "find symbol in workspace" 'l' '<esc>: lsp-workspace-symbol-incr<ret>'
+
+################################################################################
+# Highlight the word under the cursor
+
+#declare-option -hidden regex curword
+#set-face global CurWord default,rgb:4a4a4a
+#
+#hook global NormalIdle .* %{
+#  eval -draft %{ try %{
+#    exec <space><a-i>w <a-k>\A\w+\z<ret>
+#    set-option buffer curword "\b\Q%val{selection}\E\b"
+#  } catch %{
+#    set-option buffer curword ''
+#  } }
+#}
+#add-highlighter global/ dynregex '%opt{curword}' 0:CurWord
+
+################################################################################
+# Helper commands
+
+define-command ide %{
+  nop %sh{
+    layout_manager IDE
+  }
+
+  rename-client main
+  set-option global jumpclient main
+
+  new rename-client tools
+  set-option global toolsclient tools
+
+  new rename-client docs
+  set-option global docsclient docs
+}
+
+################################################################################
+# Automatic settings for filetypes
+
+#hook global WinSetOption filetype=(c|cpp) %{
+#  clang-enable-autocomplete; clang-enable-diagnostics;
+#
+#  # set clang include path
+#  evaluate-commands %sh{
+#    git_root=`git rev-parse --show-toplevel`
+#    # TODO Add all subdirs of dependencies
+#    printf 'set buffer clang_options "-I. -I%s/software/include";' "${git_root}"
+#  }
+#}
+
+hook global WinSetOption filetype=(c|cpp) %{
+  #hook window BufWritePre .* lsp-formatting-sync
+}
+
+hook global WinSetOption filetype=python %{
+  set buffer tabstop 4
+  set buffer indentwidth 4
+  set buffer lsp_insert_spaces false
+  set buffer lsp_tab_size 4
+  hook window BufWritePre .* lsp-formatting-sync
+}
+
+hook global BufCreate '.*[.](luau)' %{
+  set-option buffer filetype lua
+}
+
+hook global BufSetOption filetype=json %{
+  set-option buffer formatcmd "jq --indent %opt{tabstop} ."
+}
+
+hook global BufSetOption filetype=xml %{
+  set-option buffer formatcmd "tidy -q -xml --indent yes --indent-spaces %opt{tabstop}"
+}
+
+hook global WinSetOption filetype=rust %{
+  set buffer lsp_auto_highlight_references true
+
+  hook window BufWritePre .* lsp-formatting-sync
+
+  hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+  hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+  hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+  hook -once -always window WinSetOption filetype=.* %{
+    remove-hooks window semantic-tokens
+  }
+}
+
+hook global WinSetOption filetype=(asciidoc|markdown) %{
+  set-option window lintcmd "proselint"
+}

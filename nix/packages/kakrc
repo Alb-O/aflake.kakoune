@@ -129,7 +129,6 @@ map -docstring "open new window in horizontal split" global view s "<esc>:kitty-
 map -docstring "close current window" global view c <esc>:quit<ret>
 
 # goto bindings
-map global goto K -docstring "your kakrc" '<esc>:edit!<space>~/.config/kak/kakrc<ret>'
 map global goto B -docstring "select buffer" '<esc>: connect terminal kcr-fzf-buffers<ret>'
 map global goto f -docstring "select file" '<esc>: connect terminal kcr-fzf-files<ret>'
 

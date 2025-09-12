@@ -8,6 +8,10 @@ symlinkJoin {
     fullPkgs.jq
     fullPkgs.ripgrep
     fullPkgs.fd
+    fullPkgs.eza
+    fullPkgs.file
+    fullPkgs.fastfetch
+    fullPkgs.xdg-ninja
+    fullPkgs.just
   ];
 }
-

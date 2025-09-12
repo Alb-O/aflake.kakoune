@@ -5,6 +5,7 @@
 , opencode
 , codex
 , tools
+, nh
 }:
 symlinkJoin {
   name = "kakoune-flake";
@@ -15,5 +16,6 @@ symlinkJoin {
     opencode
     codex
     tools
+    nh
   ];
 }

@@ -2,7 +2,8 @@
 , kakoune
 , zellij
 , lazygit
-,
+, opencode
+, codex
 }:
 symlinkJoin {
   name = "kakoune-flake";
@@ -10,5 +11,7 @@ symlinkJoin {
     kakoune
     zellij
     lazygit
+    opencode
+    codex
   ];
 }

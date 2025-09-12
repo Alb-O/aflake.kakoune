@@ -8,6 +8,8 @@ let
   haveFiletypes = builtins.pathExists ./filetypes;
   # Shared LSP packages (DRY within this flake)
   lspPkgs = import ../../lib/lsp.nix { pkgs = fullPkgs; };
+  # Shared formatter packages
+  fmtPkgs = import ../../lib/formatters.nix { pkgs = fullPkgs; };
 
   # Package Kakoune config + local addons under share/kak
   config = fullPkgs.runCommand "kakoune-config" { } ''
@@ -54,7 +56,8 @@ let
               config
               fullPkgs.wl-clipboard
             ]
-            ++ lspPkgs;
+            ++ lspPkgs
+            ++ fmtPkgs;
           env = {
             KAKOUNE_CONFIG_DIR.value = "${config}/share/kak";
           };

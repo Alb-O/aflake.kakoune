@@ -1,6 +1,6 @@
 { stdenv, fetchurl }:
 stdenv.mkDerivation {
-  pname = "ai-tools-models-dev";
+  pname = "models-dev";
   version = "latest";
 
   src = fetchurl {

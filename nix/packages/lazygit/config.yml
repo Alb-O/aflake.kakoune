@@ -1,7 +1,7 @@
 gui:
   theme:
     authorColors:
-      '*': blue
+      "*": blue
     activeBorderColor:
       - default
       - bold
@@ -46,9 +46,12 @@ git:
   autoFetch: true
   autoRefresh: true
   fetchAll: true
-  branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --
+  branchLogCmd:
+    git log --graph --color=always --abbrev-commit --decorate --date=relative
+    --pretty=medium {{branchName}} --
   allBranchesLogCmds:
-    - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium
+    - git log --graph --all --color=always --abbrev-commit --decorate
+      --date=relative --pretty=medium
   log:
     order: topo-order
     showGraph: always
@@ -72,10 +75,10 @@ keybinding:
     new: n
     edit: e
     openFile: o
-    executeShellCommand: ':'
+    executeShellCommand: ":"
     refresh: R
-    nextTab: ']'
-    prevTab: '['
+    nextTab: "]"
+    prevTab: "["
     undo: z
     redo: Z
   files:

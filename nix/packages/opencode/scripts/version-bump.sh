@@ -14,8 +14,8 @@ else
 fi
 
 # Paths inside kakoune flake
-pkg_file="$root_dir/nix/packages/opencode-git.nix"
-models_dev_file="$root_dir/nix/packages/models-dev.nix"
+pkg_file="$root_dir/nix/packages/opencode/opencode-git.nix"
+models_dev_file="$root_dir/nix/packages/opencode/models-dev/default.nix"
 
 version="${1:-latest}"
 
@@ -65,7 +65,7 @@ while ((tries < max_tries)); do
   set +e
   # Build the unwrapped package (closest to the raw source) so
   # fixed-output hash mismatches are surfaced and can be patched.
-  out=$(nix build .#opencode-git 2>&1)
+  out=$(nix build .#opencode 2>&1)
   code=$?
   set -e
 

@@ -86,7 +86,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     makeBinaryWrapper
   ];
 
-  patches = [ ./opencode-local-models-dev.patch ];
+  patches = [ ./models-dev/opencode-local-models-dev.patch ];
 
   # Provide local models.dev API JSON to macro during bun build
   env.MODELS_DEV_API_JSON = "${models-dev}/dist/_api.json";

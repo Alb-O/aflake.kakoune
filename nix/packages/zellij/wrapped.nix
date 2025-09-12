@@ -9,16 +9,16 @@ let
 
   # Provide a Zellij config in the store and point ZELLIJ_CONFIG_DIR to it.
   config = fullPkgs.runCommand "zellij-config" { } ''
-        set -eu
-        outdir=$out/share/zellij
-        themedir=$outdir/themes
-        mkdir -p "$outdir" "$themedir"
+    set -eu
+    outdir=$out/share/zellij
+    themedir=$outdir/themes
+    mkdir -p "$outdir" "$themedir"
 
-        # Install themes
-        cp ${./themes/gruvdark.kdl} "$themedir/gruvdark.kdl"
+    # Install themes
+    cp ${./themes/gruvdark.kdl} "$themedir/gruvdark.kdl"
 
-        # Install our config.kdl (includes theme and options)
-        install -Dm444 ${./config.kdl} "$outdir/config.kdl"
+    # Install our config.kdl (includes theme and options)
+    install -Dm444 ${./config.kdl} "$outdir/config.kdl"
   '';
 
   # Simple launcher that delegates to upstream zellij

@@ -1,4 +1,10 @@
-{ callPackage, models-dev, opencode-config, inputs, lib, system, ... }@pkgs:
+{ callPackage
+, models-dev
+, inputs
+, lib
+, system
+, ...
+}@pkgs:
 let
   # Get the full nixpkgs with all functions
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
@@ -9,11 +15,14 @@ let
   # Shared clipboard wrapper
   clipboard = import ../../lib/clipboard.nix { pkgs = fullPkgs; };
   # Build the base opencode package
-  opencode-base = callPackage ../opencode-git.nix {
+  opencode-base = callPackage ./opencode-git.nix {
     inherit models-dev;
   };
+  config = fullPkgs.runCommand "opencode-config" { } ''
+    mkdir -p $out
+    cp ${./config/opencode.json} $out/opencode.json
+  '';
 
-  # Create wrapper-manager evaluation
   wm-eval = inputs.wrapper-manager.lib {
     pkgs = fullPkgs;
     inherit lib;
@@ -21,15 +30,23 @@ let
       {
         wrappers.opencode = {
           basePackage = opencode-base;
-          # Override XDG_CONFIG_HOME to point to our bundled config
+          # Note: opencode supports the env var 'OPENCODE_CONFIG',
+          # but setting this overrides project-specific config files,
+          # so we will set XDG_CONFIG_HOME to the store path instead.
           env = {
             XDG_CONFIG_HOME = {
-              value = "${opencode-config}";
+              value = "${config}";
               force = true;
             };
           };
-          # Share LSP + formatter packages to match devShell and other wrappers
-          extraPackages = lspPkgs ++ fmtPkgs ++ [ clipboard ];
+          # Share LSP + formatter packages
+          extraPackages =
+            lspPkgs
+            ++ fmtPkgs
+            ++ [
+              clipboard
+              config
+            ];
         };
       }
     ];

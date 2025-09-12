@@ -6,7 +6,8 @@
 - `nix/packages/` — package modules.
 - `kakrc` — main Kakoune config (autoloads `filetypes/` and `plugins/`).
 - `kakoune-wrapped.nix` — wrapper-manager config (sets `KAKOUNE_CONFIG_DIR`).
-- `nix/lib/lsp.nix` — single source of truth for LSP packages shared across devShell and wrappers.
+- `nix/lib/lsp.nix` — single source of truth for LSP packages shared across
+  devShell and wrappers.
   - `plugins/` — add custom `.kak` files (e.g., `improved-insert-mode.kak`).
 - `result/` — build output after `nix build`.
 

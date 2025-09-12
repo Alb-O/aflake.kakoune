@@ -12,5 +12,6 @@
     flakelight ./. {
       inherit inputs;
       # packages are auto-loaded from ./nix/packages
+      devShell.packages = pkgs: import ./nix/lib/lsp.nix { pkgs = pkgs; };
     };
 }

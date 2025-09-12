@@ -6,6 +6,8 @@
 let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
   haveFiletypes = builtins.pathExists ./filetypes;
+  # Shared LSP packages (DRY within this flake)
+  lspPkgs = import ../../lib/lsp.nix { pkgs = fullPkgs; };
 
   # Package Kakoune config + local addons under share/kak
   config = fullPkgs.runCommand "kakoune-config" { } ''
@@ -46,19 +48,13 @@ let
         wrappers.kakoune = {
           wrapperType = "shell";
           basePackage = kakouneLauncher;
-          extraPackages = [
-            fullPkgs.kakoune
-            config
-            fullPkgs.kakoune-lsp
-            fullPkgs.rust-analyzer
-            fullPkgs.nil
-            fullPkgs.marksman
-            fullPkgs.nodePackages_latest.typescript-language-server
-            fullPkgs.nodePackages_latest.typescript
-            fullPkgs.vscode-langservers-extracted
-            fullPkgs.tailwindcss-language-server
-            fullPkgs.wl-clipboard
-          ];
+          extraPackages =
+            [
+              fullPkgs.kakoune
+              config
+              fullPkgs.wl-clipboard
+            ]
+            ++ lspPkgs;
           env = {
             KAKOUNE_CONFIG_DIR.value = "${config}/share/kak";
           };

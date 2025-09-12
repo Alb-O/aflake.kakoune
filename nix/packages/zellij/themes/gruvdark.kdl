@@ -1,0 +1,144 @@
+// Zellij theme: gruvdark
+// Derived from nix/packages/colors/gruvdark.kak
+// Palette (hex → RGB):
+// - fg_light: #e6e3de → 230 227 222
+// - fg:       #d6cfc4 → 214 207 196
+// - bg1:      #1e1e1e → 30 30 30
+// - bg3:      #252525 → 37 37 37
+// - bg4:      #303030 → 48 48 48
+// - grey_lt:  #9d9a94 → 157 154 148
+// - blue:     #579dd4 → 87 157 212
+// - blue_dk:  #2a404f → 42 64 79
+// - green:    #72ba62 → 114 186 98
+// - aqua:     #00a596 → 0 165 150
+// - orange:   #d19f66 → 209 159 102
+// - purple:   #9266da → 146 102 218
+// - pink:     #d159b6 → 209 89 182
+// - red:      #e16464 → 225 100 100
+
+themes {
+  gruvdark {
+    text_unselected {
+      base 230 227 222
+      background 30 30 30
+      emphasis_0 209 159 102
+      emphasis_1 114 186 98
+      emphasis_2 87 157 212
+      emphasis_3 146 102 218
+    }
+    text_selected {
+      base 230 227 222
+      background 42 64 79
+      emphasis_0 209 159 102
+      emphasis_1 114 186 98
+      emphasis_2 87 157 212
+      emphasis_3 146 102 218
+    }
+
+    ribbon_selected {
+      base 230 227 222       // light text
+      background 48 48 48    // dark background (bg4)
+      emphasis_0 209 159 102
+      emphasis_1 0 165 150
+      emphasis_2 146 102 218
+      emphasis_3 87 157 212
+    }
+    ribbon_unselected {
+      base 157 154 148       // dim text
+      background 37 37 37    // dark background (bg3)
+      emphasis_0 225 100 100
+      emphasis_1 230 227 222
+      emphasis_2 0 165 150
+      emphasis_3 209 89 182
+    }
+
+    table_title {
+      base 209 159 102
+      background 0
+      emphasis_0 87 157 212
+      emphasis_1 114 186 98
+      emphasis_2 146 102 218
+      emphasis_3 0 165 150
+    }
+    table_cell_selected {
+      base 230 227 222
+      background 42 64 79
+      emphasis_0 209 159 102
+      emphasis_1 114 186 98
+      emphasis_2 87 157 212
+      emphasis_3 146 102 218
+    }
+    table_cell_unselected {
+      base 230 227 222
+      background 30 30 30
+      emphasis_0 209 159 102
+      emphasis_1 114 186 98
+      emphasis_2 87 157 212
+      emphasis_3 146 102 218
+    }
+
+    list_selected {
+      base 230 227 222
+      background 42 64 79
+      emphasis_0 209 159 102
+      emphasis_1 114 186 98
+      emphasis_2 87 157 212
+      emphasis_3 146 102 218
+    }
+    list_unselected {
+      base 230 227 222
+      background 30 30 30
+      emphasis_0 209 159 102
+      emphasis_1 114 186 98
+      emphasis_2 87 157 212
+      emphasis_3 146 102 218
+    }
+
+    frame_selected {
+      base 0 165 150
+      background 0
+      emphasis_0 209 159 102
+      emphasis_1 114 186 98
+      emphasis_2 209 89 182
+      emphasis_3 0
+    }
+    frame_highlight {
+      base 225 100 100
+      background 0
+      emphasis_0 209 89 182
+      emphasis_1 225 100 100
+      emphasis_2 225 100 100
+      emphasis_3 225 100 100
+    }
+
+    exit_code_success {
+      base 114 186 98
+      background 0
+      emphasis_0 0 165 150
+      emphasis_1 30 30 30
+      emphasis_2 209 159 102
+      emphasis_3 87 157 212
+    }
+    exit_code_error {
+      base 225 100 100
+      background 0
+      emphasis_0 209 159 102
+      emphasis_1 0
+      emphasis_2 0
+      emphasis_3 0
+    }
+
+    multiplayer_user_colors {
+      player_1 209 89 182
+      player_2 0 165 150
+      player_3 0
+      player_4 209 159 102
+      player_5 87 157 212
+      player_6 0
+      player_7 225 100 100
+      player_8 146 102 218
+      player_9 114 186 98
+      player_10 0
+    }
+  }
+}

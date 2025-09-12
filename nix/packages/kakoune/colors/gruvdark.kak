@@ -109,3 +109,4 @@ hook -group gruvdark-cursor global ModeChange 'pop:insert:.*' %{
   set-face global PrimaryCursor   "%opt{bg1},%opt{blue}"
   set-face global SecondaryCursor "%opt{bg1},%opt{aqua}"
 }
+

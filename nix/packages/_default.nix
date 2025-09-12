@@ -1,12 +1,12 @@
 { symlinkJoin
-, kakoune-wrapped
-, zellij-wrapped
+, kakoune
+, zellij
 ,
 }:
 symlinkJoin {
   name = "kakoune-flake";
   paths = [
-    kakoune-wrapped
-    zellij-wrapped
+    kakoune
+    zellij
   ];
 }

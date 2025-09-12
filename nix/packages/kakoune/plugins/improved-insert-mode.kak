@@ -54,3 +54,4 @@ map global insert <c-s-up>    '<a-;>{p'
 map global insert <c-a-up>    '<a-;>{p'
 map global insert <c-s-down>  '<a-;>}p'
 map global insert <c-a-down>  '<a-;>}p'
+

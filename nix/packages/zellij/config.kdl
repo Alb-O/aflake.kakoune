@@ -1,0 +1,6 @@
+// Zellij config packaged by this flake
+// Docs: https://zellij.dev/documentation/configuration.html
+
+theme "gruvdark"
+simplified_ui true
+

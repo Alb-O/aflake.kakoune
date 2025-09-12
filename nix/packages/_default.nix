@@ -7,6 +7,7 @@
 , tools
 , nh
 , atuin
+, intelli-shell
 }:
 symlinkJoin {
   name = "kakoune-flake";
@@ -19,5 +20,6 @@ symlinkJoin {
     tools
     nh
     atuin
+    intelli-shell
   ];
 }

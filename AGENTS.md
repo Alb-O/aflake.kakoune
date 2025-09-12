@@ -54,3 +54,23 @@
   (e.g., `nix/packages/zellij-wrapped.nix`), run `git add` before `nix build`.
   Otherwise evaluation may fail with missing attributes because untracked files
   are ignored.
+
+## IntelliShell Integration
+
+- Build: `nix build .#default` (includes IntelliShell) or `nix build .#intelli-shell`.
+- Quick enable (writes to rc files): `result/bin/intelli-shell-activate`.
+  - Appends a single `source …/profile.d/intelli-shell.sh` line to Bash/Zsh, or sources Fish init.
+- No file writes (recommended for immutable/generator-managed rc):
+  - Session-only: `source "$(readlink -f result)/share/profile.d/intelli-shell.sh"`.
+  - Wrapper shells: `result/bin/ishell` (or `ishell-bash`, `ishell-zsh`, `ishell-fish`).
+    - Set your terminal command to `result/bin/ishell` for automatic integration.
+- Nix profile autoload: installing `.#intelli-shell` or `.#default` exposes
+  `etc/profile.d/intelli-shell.sh`. If your environment sources
+  `$HOME/.nix-profile/etc/profile.d/*.sh`, integration activates automatically.
+- Hotkeys (override before sourcing the init):
+  - Defaults: Search `Ctrl-Space`, Bookmark `Ctrl-B`, Variables `Ctrl-L`, Fix `Ctrl-X`.
+  - Bash/Zsh: `export INTELLI_SEARCH_HOTKEY='\C-t'` (example).
+  - Fish: `set -Ux INTELLI_SEARCH_HOTKEY \cT` (example).
+- Verify:
+  - Fish: `bind | rg -i intelli` (should show four bindings).
+  - Bash/Zsh: run `intelli-shell --help` and try the hotkeys in an interactive shell.

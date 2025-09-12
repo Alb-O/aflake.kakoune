@@ -4,6 +4,7 @@
 , lazygit
 , opencode
 , codex
+, tools
 }:
 symlinkJoin {
   name = "kakoune-flake";
@@ -13,5 +14,6 @@ symlinkJoin {
     lazygit
     opencode
     codex
+    tools
   ];
 }

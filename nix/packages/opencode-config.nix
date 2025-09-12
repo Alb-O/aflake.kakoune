@@ -1,12 +1,12 @@
-{ stdenvNoCC, src }:
+{ stdenvNoCC }:
 stdenvNoCC.mkDerivation {
   pname = "ai-tools-config";
   version = "local";
 
-  src = src + "/config";
+  src = ./opencode;
 
   installPhase = ''
     mkdir -p $out/opencode
-    cp -r opencode/* $out/opencode/
+    cp -r config/* $out/opencode/
   '';
 }

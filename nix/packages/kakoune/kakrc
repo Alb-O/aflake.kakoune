@@ -221,6 +221,35 @@ hook global BufSetOption filetype=xml %{
   set-option buffer formatcmd "tidy -q -xml --indent yes --indent-spaces %opt{tabstop}"
 }
 
+# Auto-format on save using common formatters present in PATH
+# The 'format' command will use 'formatcmd' if set; we wrap in try to avoid errors
+hook global BufWritePre .* %{ try %{ format } }
+
+# Nix
+hook global BufSetOption filetype=nix %{
+  set-option buffer formatcmd "nixfmt"
+}
+
+# Go (prefer gofumpt)
+hook global BufSetOption filetype=go %{
+  set-option buffer formatcmd "gofumpt"
+}
+
+# Shell
+hook global BufSetOption filetype=sh %{
+  set-option buffer formatcmd "shfmt -i 2 -ci -bn"
+}
+
+# Lua
+hook global BufSetOption filetype=lua %{
+  set-option buffer formatcmd "stylua - --search-parent-directories"
+}
+
+# JavaScript / TypeScript / JSX / TSX / Markdown via Prettier
+hook global BufSetOption filetype=(javascript|typescript|jsx|tsx|markdown) %{
+  set-option buffer formatcmd "prettier --stdin-filepath %val{buffile}"
+}
+
 hook global WinSetOption filetype=rust %{
   set buffer lsp_auto_highlight_references true
 
@@ -242,4 +271,3 @@ hook global WinSetOption filetype=(asciidoc|markdown) %{
     remove-highlighter global/markdown-wrap
   }
 }
-

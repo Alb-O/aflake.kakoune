@@ -1,6 +1,7 @@
 { symlinkJoin
 , kakoune
 , zellij
+, lazygit
 ,
 }:
 symlinkJoin {
@@ -8,5 +9,6 @@ symlinkJoin {
   paths = [
     kakoune
     zellij
+    lazygit
   ];
 }

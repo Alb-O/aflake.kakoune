@@ -5,6 +5,7 @@
 }@pkgs:
 let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
+  clipboard = import ../../lib/clipboard.nix { pkgs = fullPkgs; };
 
   # Provide a Zellij config in the store and point ZELLIJ_CONFIG_DIR to it.
   config = fullPkgs.runCommand "zellij-config" { } ''
@@ -36,6 +37,7 @@ let
           extraPackages = [
             fullPkgs.zellij
             config
+            clipboard
           ];
           env = {
             ZELLIJ_CONFIG_DIR.value = "${config}/share/zellij";

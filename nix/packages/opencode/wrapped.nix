@@ -6,6 +6,8 @@ let
   lspPkgs = import ../../lib/lsp.nix { pkgs = fullPkgs; };
   # Shared formatter packages from this flake
   fmtPkgs = import ../../lib/formatters.nix { pkgs = fullPkgs; };
+  # Shared clipboard wrapper
+  clipboard = import ../../lib/clipboard.nix { pkgs = fullPkgs; };
   # Build the base opencode package
   opencode-base = callPackage ../opencode-git.nix {
     inherit models-dev;
@@ -27,7 +29,7 @@ let
             };
           };
           # Share LSP + formatter packages to match devShell and other wrappers
-          extraPackages = lspPkgs ++ fmtPkgs;
+          extraPackages = lspPkgs ++ fmtPkgs ++ [ clipboard ];
         };
       }
     ];

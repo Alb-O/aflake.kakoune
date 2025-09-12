@@ -10,6 +10,8 @@ let
   lspPkgs = import ../../lib/lsp.nix { pkgs = fullPkgs; };
   # Shared formatter packages
   fmtPkgs = import ../../lib/formatters.nix { pkgs = fullPkgs; };
+  # Shared clipboard (wl-copy wrapper with WSL fallback)
+  clipboard = import ../../lib/clipboard.nix { pkgs = fullPkgs; };
 
   # Package Kakoune config + local addons under share/kak
   config = fullPkgs.runCommand "kakoune-config" { } ''
@@ -54,7 +56,7 @@ let
             [
               fullPkgs.kakoune
               config
-              fullPkgs.wl-clipboard
+              clipboard
             ]
             ++ lspPkgs
             ++ fmtPkgs;

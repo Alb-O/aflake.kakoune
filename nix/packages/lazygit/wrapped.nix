@@ -5,6 +5,7 @@
 }@pkgs:
 let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
+  clipboard = import ../../lib/clipboard.nix { pkgs = fullPkgs; };
 
   # Provide a Lazygit config in the store and point LG_CONFIG_FILE to it.
   config = fullPkgs.runCommand "lazygit-config" { } ''
@@ -28,6 +29,7 @@ let
           extraPackages = [
             fullPkgs.lazygit
             config
+            clipboard
           ];
           env = {
             LG_CONFIG_FILE.value = "${config}/config.yml";

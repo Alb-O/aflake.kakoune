@@ -6,6 +6,7 @@
 , codex
 , tools
 , nh
+, atuin
 }:
 symlinkJoin {
   name = "kakoune-flake";
@@ -17,5 +18,6 @@ symlinkJoin {
     codex
     tools
     nh
+    atuin
   ];
 }

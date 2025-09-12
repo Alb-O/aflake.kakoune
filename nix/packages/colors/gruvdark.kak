@@ -17,14 +17,14 @@ declare-option str grey 'rgb:575757'
 declare-option str grey_light 'rgb:9d9a94'
 
 # Background ramp
-declare-option str bg0 'rgb:1e1e1e'
-declare-option str bg1 'rgb:232323'
-declare-option str bg2 'rgb:252525'
-declare-option str bg3 'rgb:303030'
-declare-option str bg4 'rgb:323232'
-declare-option str bg5 'rgb:373737'
-declare-option str bg6 'rgb:3c3c3c'
-declare-option str bg7 'rgb:424242'
+declare-option str bg0 'rgb:191919' # Darkest bg for menus only
+declare-option str bg1 'rgb:1e1e1e' # Primary bg
+declare-option str bg2 'rgb:232323'
+declare-option str bg3 'rgb:252525'
+declare-option str bg4 'rgb:303030'
+declare-option str bg5 'rgb:323232'
+declare-option str bg6 'rgb:373737'
+declare-option str bg7 'rgb:3c3c3c'
 
 # Extras
 declare-option str line_nr 'rgb:545454'
@@ -35,31 +35,29 @@ declare-option str diff_change 'rgb:1c3448'
 declare-option str diff_text 'rgb:2c5372'
 
 # Builtin faces
-set-face global Default            "%opt{fg},%opt{bg0}"
+set-face global Default            "%opt{fg},%opt{bg1}"
 set-face global PrimarySelection   ",%opt{blue_dark}"
 set-face global SecondarySelection ",%opt{blue_dark}"
-set-face global PrimaryCursor      "%opt{bg0},%opt{blue}"
-set-face global SecondaryCursor    "%opt{bg0},%opt{aqua}"
-set-face global PrimaryCursorEol   "%opt{bg0},%opt{red}"
-set-face global SecondaryCursorEol "%opt{bg0},%opt{orange}"
-set-face global LineNumbers        "%opt{line_nr},%opt{bg0}"
-set-face global LineNumberCursor   "%opt{fg_light},%opt{bg0}+b"
-set-face global LineNumbersWrapped "%opt{bg5},%opt{bg0}+i"
+set-face global PrimaryCursor      "%opt{bg1},%opt{blue}"
+set-face global SecondaryCursor    "%opt{bg1},%opt{aqua}"
+set-face global PrimaryCursorEol   "%opt{bg1},%opt{red}"
+set-face global SecondaryCursorEol "%opt{bg1},%opt{orange}"
+set-face global LineNumbers        "%opt{line_nr},%opt{bg1}"
+set-face global LineNumberCursor   "%opt{fg_light},%opt{bg1}+b"
+set-face global LineNumbersWrapped "%opt{bg5},%opt{bg1}+i"
 set-face global StatusLine         "%opt{fg_light},%opt{bg4}"
 set-face global StatusLineMode     "%opt{fg_light},%opt{blue_dark}"
 set-face global StatusLineInfo     "%opt{fg_light},%opt{bg4}"
 set-face global StatusLineValue    "%opt{fg_light},%opt{bg4}"
-set-face global StatusCursor       "%opt{bg0},%opt{blue}"
+set-face global StatusCursor       "%opt{bg1},%opt{blue}"
 set-face global Prompt             "%opt{fg_light},%opt{bg4}"
-set-face global Information        "%opt{fg_light},%opt{bg5}"
-set-face global Error              "%opt{red},%opt{bg0}"
-set-face global MatchingChar       "%opt{blue},%opt{bg0}"
-set-face global Whitespace         "%opt{grey_light},%opt{bg0}+f"
+set-face global Error              "%opt{red},%opt{bg1}"
+set-face global MatchingChar       "%opt{blue},%opt{bg1}"
+set-face global Whitespace         "%opt{grey_light},%opt{bg1}+f"
 set-face global WrapMarker         Whitespace
-set-face global BufferPadding      "%opt{bg0},%opt{bg0}"
+set-face global BufferPadding      "%opt{bg1},%opt{bg1}"
 set-face global MenuForeground     "%opt{fg_light},%opt{blue_dark}+b"
-set-face global MenuBackground     "%opt{fg_light},%opt{bg4}"
-set-face global MenuInfo           "%opt{fg_light},%opt{bg5}"
+set-face global MenuBackground     "%opt{fg_light},%opt{bg0}"
 set-face global Information        "%opt{fg_light},%opt{bg3}"
 
 # Code faces
@@ -98,16 +96,16 @@ set-face global DiffChanged    "%opt{blue},%opt{diff_change}"
 set-face global DiffModified   "%opt{fg},%opt{diff_text}"
 
 # Search highlighting
-set-face global Search       "%opt{bg0},%opt{orange}"
-set-face global IncSearch    "%opt{bg0},%opt{blue}"
+set-face global Search       "%opt{bg1},%opt{orange}"
+set-face global IncSearch    "%opt{bg1},%opt{blue}"
 
 # Insert-mode white cursor
 remove-hooks global gruvdark-cursor
 hook -group gruvdark-cursor global ModeChange 'push:.*:insert' %{
-  set-face global PrimaryCursor   "%opt{bg0},rgb:ffffff"
-  set-face global SecondaryCursor "%opt{bg0},rgb:ffffff"
+  set-face global PrimaryCursor   "%opt{bg1},rgb:ffffff"
+  set-face global SecondaryCursor "%opt{bg1},rgb:ffffff"
 }
 hook -group gruvdark-cursor global ModeChange 'pop:insert:.*' %{
-  set-face global PrimaryCursor   "%opt{bg0},%opt{blue}"
-  set-face global SecondaryCursor "%opt{bg0},%opt{aqua}"
+  set-face global PrimaryCursor   "%opt{bg1},%opt{blue}"
+  set-face global SecondaryCursor "%opt{bg1},%opt{aqua}"
 }

@@ -43,4 +43,8 @@ let
     ];
   };
 in
-wm.config.wrappers.niri.wrapped
+wm.config.wrappers.niri.wrapped.overrideAttrs (old: {
+  passthru = (old.passthru or {}) // {
+    providedSessions = [ "niri" ];
+  };
+})

@@ -1,9 +1,10 @@
-{ callPackage
-, models-dev
-, inputs
-, lib
-, system
-, ...
+{
+  callPackage,
+  models-dev,
+  inputs,
+  lib,
+  system,
+  ...
 }@pkgs:
 let
   # Get the full nixpkgs with all functions
@@ -19,8 +20,8 @@ let
     inherit models-dev;
   };
   config = fullPkgs.runCommand "opencode-config" { } ''
-    mkdir -p $out
-    cp ${./config/opencode.json} $out/opencode.json
+    mkdir -p $out/opencode
+    cp ${./config/opencode.json} $out/opencode/opencode.json
   '';
 
   wm-eval = inputs.wrapper-manager.lib {

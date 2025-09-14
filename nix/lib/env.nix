@@ -1,8 +1,8 @@
-{ pkgs ? null }:
 {
-  # Global, safe defaults. Avoid setting TERM globally.
+  pkgs ? null,
+}:
+{
   EDITOR = "kak";
   VISUAL = "kak";
-  # Preferred terminal emulator command for programs to spawn
-  TERMINAL = "kitty";
+  TERMINAL = "wezterm";
 }

@@ -124,7 +124,7 @@ binds {
     Mod+Period { expel-window-from-column; }
     Mod+Q { close-window; }
     Mod+R { switch-preset-column-width; }
-    Mod+Return { spawn "kitty"; }
+    Mod+Return { spawn "xdg-terminal"; }
     Mod+Right { focus-column-right; }
     Mod+Shift+C { spawn "sh" "-c" "hyprpicker | wl-copy -n"; }
     Mod+Shift+Ctrl+Down { move-column-to-monitor-down; }
@@ -182,15 +182,11 @@ window-rule {
     open-floating true
 }
 window-rule {
-    match app-id="^org\\.wezfurlong\\.wezterm$"
-    default-column-width
-}
-window-rule {
     match app-id="firefox$" title="^Picture-in-Picture$"
     open-floating true
 }
 window-rule {
-    match app-id="pop"
+    match app-id="kakkle-pop"
     default-column-width { proportion 1.100000; }
     default-window-height { proportion 1.100000; }
 }

@@ -1,10 +1,9 @@
-{
-  callPackage,
-  models-dev,
-  inputs,
-  lib,
-  system,
-  ...
+{ callPackage
+, models-dev
+, inputs
+, lib
+, system
+, ...
 }@pkgs:
 let
   # Get the full nixpkgs with all functions

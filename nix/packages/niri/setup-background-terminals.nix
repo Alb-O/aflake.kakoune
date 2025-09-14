@@ -1,4 +1,5 @@
-{pkgs}: let
+{ pkgs }:
+let
   setupScript = pkgs.writeShellScriptBin "setup-background-terminals" ''
     set -euo pipefail
 
@@ -20,4 +21,5 @@
     wait
   '';
 in
-  setupScript
+setupScript
+

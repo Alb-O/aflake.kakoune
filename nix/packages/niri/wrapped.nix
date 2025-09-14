@@ -1,8 +1,7 @@
-{
-  inputs,
-  lib,
-  system,
-  ...
+{ inputs
+, lib
+, system
+, ...
 }@pkgs:
 let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
@@ -44,7 +43,8 @@ let
   };
 in
 wm.config.wrappers.niri.wrapped.overrideAttrs (old: {
-  passthru = (old.passthru or {}) // {
+  passthru = (old.passthru or { }) // {
     providedSessions = [ "niri" ];
   };
 })
+

@@ -8,11 +8,11 @@ let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
   haveFiletypes = builtins.pathExists ./filetypes;
   # Shared LSP packages (DRY within this flake)
-  lspPkgs = import ../../lib/lsp.nix { pkgs = fullPkgs; };
+  lspPkgs = import ../../../lib/lsp.nix { pkgs = fullPkgs; };
   # Shared formatter packages
-  fmtPkgs = import ../../lib/formatters.nix { pkgs = fullPkgs; };
+  fmtPkgs = import ../../../lib/formatters.nix { pkgs = fullPkgs; };
   # Shared clipboard (wl-copy wrapper with WSL fallback)
-  clipboard = import ../../lib/clipboard.nix { pkgs = fullPkgs; };
+  clipboard = import ../../../lib/clipboard.nix { pkgs = fullPkgs; };
 
   # Package Kakoune config + local addons under share/kak
   config = fullPkgs.runCommand "kakoune-config" { } ''

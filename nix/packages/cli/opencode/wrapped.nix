@@ -10,11 +10,11 @@ let
   # Get the full nixpkgs with all functions
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
   # Shared LSP packages from this flake
-  lspPkgs = import ../../lib/lsp.nix { pkgs = fullPkgs; };
+  lspPkgs = import ../../../lib/lsp.nix { pkgs = fullPkgs; };
   # Shared formatter packages from this flake
-  fmtPkgs = import ../../lib/formatters.nix { pkgs = fullPkgs; };
+  fmtPkgs = import ../../../lib/formatters.nix { pkgs = fullPkgs; };
   # Shared clipboard wrapper
-  clipboard = import ../../lib/clipboard.nix { pkgs = fullPkgs; };
+  clipboard = import ../../../lib/clipboard.nix { pkgs = fullPkgs; };
   # Build the base opencode package
   opencode-base = callPackage ./opencode-git.nix {
     inherit models-dev;

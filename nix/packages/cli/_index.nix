@@ -7,7 +7,6 @@
   codex = import ./codex pkgs;
   tools = import ./tools pkgs;
   nh = import ./nh pkgs;
-  atuin = import ./atuin pkgs;
   env = import ./env pkgs;
   xdg-terminal = import ./xdg-terminal pkgs;
 }

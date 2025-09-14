@@ -1,4 +1,4 @@
-{ writeShellApplication, nodejs }:
+{ writeShellApplication, nodejs, ... }:
 writeShellApplication {
   name = "codex";
   runtimeInputs = [ nodejs ];

@@ -1,4 +1,4 @@
 { ... }@pkgs:
 {
-  niri = pkgs.callPackage ./niri { };
+  niri = import ./niri pkgs;
 }

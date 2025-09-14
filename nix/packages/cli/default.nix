@@ -1,11 +1,11 @@
 { ... }@pkgs:
 {
-  kakoune = import ./kakoune pkgs;
-  zellij = import ./zellij pkgs;
-  lazygit = import ./lazygit pkgs;
-  opencode = import ./opencode pkgs;
-  codex = import ./codex pkgs;
-  tools = import ./tools pkgs;
-  nh = import ./nh pkgs;
-  atuin = import ./atuin pkgs;
+  kakoune = pkgs.callPackage ./kakoune { };
+  zellij = pkgs.callPackage ./zellij { };
+  lazygit = pkgs.callPackage ./lazygit { };
+  opencode = pkgs.callPackage ./opencode { };
+  codex = pkgs.callPackage ./codex { };
+  tools = pkgs.callPackage ./tools { };
+  nh = pkgs.callPackage ./nh { };
+  atuin = pkgs.callPackage ./atuin { };
 }

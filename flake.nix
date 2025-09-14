@@ -12,6 +12,7 @@
     flakelight ./. {
       inherit inputs;
       # packages are auto-loaded from ./nix/packages
+      # Categories under nix/packages/{cli,gui} are imported by _default.nix
       # Share LSPs + formatters in the devShell
       devShell.packages =
         pkgs:

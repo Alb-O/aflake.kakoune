@@ -19,6 +19,17 @@
 - Source a plugin (dummy):
   `result/bin/kak -ui dummy -e 'source %val{config}/plugins/improved-insert-mode.kak; quit'`
 
+## Environment Hooks (kakkle)
+
+- Global EDITOR/VISUAL setup is provided via a profile hook.
+- After `nix build .#default`:
+  - Bash/Zsh: `source "$(readlink -f result)/share/profile.d/kakkle-env.sh"`.
+- If installed via `nix profile install .#default` and your environment sources
+  `$HOME/.nix-profile/etc/profile.d/*.sh`, EDITOR/VISUAL will be set on login.
+- Do not set `TERM` globally. Instead:
+  - Set `TERMINAL=kitty` via the same hook (already done).
+  - Use `xdg-terminal` or `x-terminal-emulator` to spawn a terminal; they fall back to `$TERMINAL` or common emulators.
+
 ## Fast Kakoune Docs & API Search
 
 - Find installed docs: `fd -a '/share/kak/doc' /nix/store`

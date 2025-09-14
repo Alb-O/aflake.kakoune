@@ -1,5 +1,5 @@
 {
-  description = "Kakoune";
+  description = "kakkle";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -21,7 +21,7 @@
           wantGraphical = !isWSL;
         in
         pkgs.symlinkJoin {
-          name = "kakoune-flake";
+          name = "kakkle";
           paths = (builtins.attrValues cli)
             ++ pkgs.lib.optionals wantGraphical (builtins.attrValues gui);
         };
@@ -31,7 +31,7 @@
           gui = import ./nix/packages/gui/_index.nix pkgs;
         in
         pkgs.symlinkJoin {
-          name = "kakoune-flake-all";
+          name = "kakkle-all";
           paths = (builtins.attrValues cli) ++ (builtins.attrValues gui);
         };
       # Share LSPs + formatters in the devShell

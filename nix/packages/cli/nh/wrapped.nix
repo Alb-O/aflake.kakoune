@@ -125,6 +125,7 @@ let
           clean_one() {
             local cmd="$1"
             local pdir="$state_home/nh/$cmd/pids"
+            local cmddir="$state_home/nh/$cmd"
             local cleaned=0
             if [ -d "$pdir" ]; then
               for pf in "$pdir"/*; do
@@ -137,6 +138,8 @@ let
               done
               ${fullPkgs.coreutils}/bin/rmdir --ignore-fail-on-non-empty "$pdir" 2>/dev/null || true
             fi
+            # Remove the command directory if it's empty
+            ${fullPkgs.coreutils}/bin/rmdir --ignore-fail-on-non-empty "$cmddir" 2>/dev/null || true
             echo "nh: cleaned $cleaned stale pid files for '$cmd'" >&2
           }
           if [ "$#" -ge 1 ]; then
@@ -242,7 +245,8 @@ let
           if command -v "$cmd" >/dev/null 2>&1; then :; else echo "nh: command not found: $cmd" >&2; fi
           exit 127
         fi
-        outdir="$state_home/nh/$cmd"
+        cmd_name=$(${fullPkgs.coreutils}/bin/basename "$cmd")
+        outdir="$state_home/nh/$cmd_name"
         mkdir -p "$outdir" "$outdir/pids"
         ts=$(${fullPkgs.coreutils}/bin/date +%Y%m%d-%H%M%S)
         outfile="$outdir/$ts.out"

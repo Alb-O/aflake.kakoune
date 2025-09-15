@@ -14,7 +14,7 @@ let
   clipboard = import ../../../lib/clipboard.nix { pkgs = fullPkgs; };
 
   # Binaries we ensure are on PATH inside Kak's %sh blocks
-  depsBinPath = lib.makeBinPath [ fullPkgs.lua ];
+  depsBinPath = lib.makeBinPath [ fullPkgs.lua fullPkgs.luajit ];
 
   # Package Kakoune config + local addons under share/kak
   config = fullPkgs.runCommand "kakoune-config" { } ''

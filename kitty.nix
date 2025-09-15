@@ -1,7 +1,6 @@
-{
-  pkgs,
-  fonts,
-  ...
+{ pkgs
+, fonts
+, ...
 }: {
   programs.kitty = {
     enable = true;

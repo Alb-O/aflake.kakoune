@@ -13,6 +13,9 @@ let
   # Shared clipboard (wl-copy wrapper with WSL fallback)
   clipboard = import ../../../lib/clipboard.nix { pkgs = fullPkgs; };
 
+  # Binaries we ensure are on PATH inside Kak's %sh blocks
+  depsBinPath = lib.makeBinPath [ fullPkgs.lua ];
+
   # Package Kakoune config + local addons under share/kak
   config = fullPkgs.runCommand "kakoune-config" { } ''
     set -eu
@@ -28,9 +31,17 @@ let
     done < <(find ${./colors} -type f -name '*.kak' -print)
 
     # Plugins
+    # 1) Copy any plugin directories (e.g., git submodules) preserving structure
+    for d in ${./plugins}/*; do
+      if [ -d "$d" ]; then
+        cp -a "$d" "$outdir/plugins/"
+      fi
+    done
+
+    # 2) Copy standalone .kak files at the top level (keep them flat)
     while IFS= read -r f; do
       install -Dm444 "$f" "$outdir/plugins/$(basename "$f")"
-    done < <(find ${./plugins} -type f -name '*.kak' -print)
+    done < <(find ${./plugins} -maxdepth 1 -type f -name '*.kak' -print)
 
     # Optional filetypes
     ${lib.optionalString haveFiletypes ''
@@ -41,6 +52,7 @@ let
   '';
 
   kakouneLauncher = fullPkgs.writeShellScriptBin "kak" ''
+    export PATH="${depsBinPath}:$PATH"
     exec -a "$0" "${fullPkgs.kakoune}/bin/kak" "$@"
   '';
 

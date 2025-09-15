@@ -8,7 +8,9 @@
 - `kakoune-wrapped.nix` — wrapper-manager config (sets `KAKOUNE_CONFIG_DIR`).
 - `nix/lib/lsp.nix` — single source of truth for LSP packages shared across
   devShell and wrappers.
-  - `plugins/` — add custom `.kak` files (e.g., `improved-insert-mode.kak`).
+  - `plugins/` — add custom `.kak` files or whole plugin directories
+    (git submodules supported; directory structure is preserved at
+    `${KAKOUNE_CONFIG_DIR}/plugins/<name>/`).
 - `result/` — build output after `nix build`.
 
 ## Build, Test, Develop
@@ -17,7 +19,8 @@
 - Run: `result/bin/kak`
 - Headless smoke test: `result/bin/kak -ui dummy -e 'echo ok; quit'`
 - Source a plugin (dummy):
-  `result/bin/kak -ui dummy -e 'source %val{config}/plugins/improved-insert-mode.kak; quit'`
+  - Standalone file: `result/bin/kak -ui dummy -e 'source %val{config}/plugins/improved-insert-mode.kak; quit'`
+  - Submodule dir: `result/bin/kak -ui dummy -e 'source %val{config}/plugins/luar/luar.kak; quit'`
 
 ## Environment Hooks (kakkle)
 
@@ -28,7 +31,8 @@
   `$HOME/.nix-profile/etc/profile.d/*.sh`, EDITOR/VISUAL will be set on login.
 - Do not set `TERM` globally. Instead:
   - Set `TERMINAL=kitty` via the same hook (already done).
-  - Use `xdg-terminal` or `x-terminal-emulator` to spawn a terminal; they fall back to `$TERMINAL` or common emulators.
+  - Use `xdg-terminal` or `x-terminal-emulator` to spawn a terminal; they fall
+    back to `$TERMINAL` or common emulators.
 
 ## Fast Kakoune Docs & API Search
 
@@ -43,11 +47,15 @@
   `:doc highlighters` (or `kak -ui dummy -e 'doc hooks; quit'`).
 - Inspect wrapper env: `head -n 5 $(readlink -f result/bin/kak)` (look for
   `KAKOUNE_CONFIG_DIR`).
+ - Modules: Kak now auto-requires any `provide-module <name>` found under
+   `${KAKOUNE_CONFIG_DIR}/plugins/`. This makes submodule plugins (e.g.,
+   `peneira`) expose their commands without manual `require-module` lines.
 
 ## Plugin Guidelines (Example)
 
 - Place files in `nix/packages/plugins/` (lowercase, hyphenated names, add
-  docstrings).
+  docstrings). Plugin directories (e.g., submodules like `peneira/` or
+  `luar/`) are copied as-is under `plugins/`.
 - Example snippet (completion keys and saves):
   - `hook global InsertCompletionShow .* %{ map window insert <tab> <c-n>; map window insert <s-tab> <c-p> }`
   - `map global normal <c-s> ': w<ret>'`
@@ -69,4 +77,5 @@
 ## Niri Packaging
 
 - `niri` is now a standalone package at `nix/packages/niri`.
-- It is not bundled in `.#default`; import or install `.#niri` separately (e.g., in NixOS).
+- It is not bundled in `.#default`; import or install `.#niri` separately (e.g.,
+  in NixOS).

@@ -1,5 +1,5 @@
-{
-  pkgs ? null,
+{ pkgs ? null
+,
 }:
 {
   EDITOR = "kak";

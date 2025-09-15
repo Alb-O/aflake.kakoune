@@ -1,0 +1,6 @@
+[submodule "nix/packages/cli/kakoune/plugins/luar"]
+	path = nix/packages/cli/kakoune/plugins/luar
+	url = https://github.com/gustavo-hms/luar
+[submodule "nix/packages/cli/kakoune/plugins/peneira"]
+	path = nix/packages/cli/kakoune/plugins/peneira
+	url = https://github.com/gustavo-hms/peneira

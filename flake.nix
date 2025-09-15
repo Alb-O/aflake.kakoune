@@ -5,6 +5,16 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flakelight.url = "github:nix-community/flakelight";
     wrapper-manager.url = "github:viperML/wrapper-manager";
+
+    self.submodules = true;
+    luar = {
+      url = "./nix/packages/cli/kakoune/plugins/luar";
+      flake = false;
+    };
+    peneira = {
+      url = "./nix/packages/cli/kakoune/plugins/peneira";
+      flake = false;
+    };
   };
 
   outputs =
@@ -13,7 +23,8 @@
       inherit inputs;
       # packages are auto-loaded from ./nix/packages
       # Additionally, define aggregate outputs here to avoid auto-loader quirks.
-      packages.default = pkgs:
+      packages.default =
+        pkgs:
         let
           cli = import ./nix/packages/cli/_index.nix pkgs;
           gui = import ./nix/packages/gui/_index.nix pkgs;
@@ -22,10 +33,10 @@
         in
         pkgs.symlinkJoin {
           name = "kakkle";
-          paths = (builtins.attrValues cli)
-            ++ pkgs.lib.optionals wantGraphical (builtins.attrValues gui);
+          paths = (builtins.attrValues cli) ++ pkgs.lib.optionals wantGraphical (builtins.attrValues gui);
         };
-      packages.all = pkgs:
+      packages.all =
+        pkgs:
         let
           cli = import ./nix/packages/cli/_index.nix pkgs;
           gui = import ./nix/packages/gui/_index.nix pkgs;

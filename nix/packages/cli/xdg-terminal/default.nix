@@ -1,7 +1,6 @@
-{
-  inputs,
-  system,
-  ...
+{ inputs
+, system
+, ...
 }:
 let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};

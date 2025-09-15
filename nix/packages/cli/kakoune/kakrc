@@ -39,13 +39,20 @@ hook global ModuleLoaded kitty %{
 
 evaluate-commands %sh{
   autoload_directory() {
-    find -L "$1" -maxdepth 3 -type f -name '*\.kak' \
-      -exec printf 'try %%{ source "%s" } catch %%{ echo -debug Autoload: could not load "%s" }\n' '{}' '{}' \;
+    # Find .kak files up to depth 3, sort deterministically so dependencies
+    # like 'luar' load before consumers like 'peneira'.
+    find -L "$1" -maxdepth 3 -type f -name '*\.kak' -print \
+      | LC_ALL=C sort \
+      | while IFS= read -r f; do
+          printf 'try %%{ source "%s" } catch %%{ echo -debug Autoload: could not load "%s" }\n' "$f" "$f"
+        done
   }
 
   autoload_directory ${kak_config}/filetypes/
 
   autoload_directory ${kak_config}/plugins/
+  printf 'require-module luar\n'
+  printf 'require-module peneira\n'
 }
 
 ################################################################################

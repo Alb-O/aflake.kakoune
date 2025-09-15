@@ -18,6 +18,18 @@
         "type": "github"
       }
     },
+    "luar": {
+      "flake": false,
+      "locked": {
+        "path": "./nix/packages/cli/kakoune/plugins/luar",
+        "type": "path"
+      },
+      "original": {
+        "path": "./nix/packages/cli/kakoune/plugins/luar",
+        "type": "path"
+      },
+      "parent": []
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1757068644,
@@ -50,10 +62,24 @@
         "type": "github"
       }
     },
+    "peneira": {
+      "flake": false,
+      "locked": {
+        "path": "./nix/packages/cli/kakoune/plugins/peneira",
+        "type": "path"
+      },
+      "original": {
+        "path": "./nix/packages/cli/kakoune/plugins/peneira",
+        "type": "path"
+      },
+      "parent": []
+    },
     "root": {
       "inputs": {
         "flakelight": "flakelight",
+        "luar": "luar",
         "nixpkgs": "nixpkgs_2",
+        "peneira": "peneira",
         "wrapper-manager": "wrapper-manager"
       }
     },

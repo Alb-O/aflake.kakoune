@@ -36,6 +36,9 @@ let
             WEZTERM_CONFIG_FILE.value = "${weztermConfig}/share/wezterm/wezterm.lua";
             # Set TERMINFO_DIRS for proper terminfo detection
             TERMINFO_DIRS.value = "${weztermTerminfo}/share/terminfo";
+            # Make `wezterm cli` reliably target our mux instance.
+            # This expands at runtime in the generated shell wrapper.
+            WEZTERM_UNIX_SOCKET.value = "$XDG_RUNTIME_DIR/wezterm-$USER-$(hostname).sock";
           };
         };
       }

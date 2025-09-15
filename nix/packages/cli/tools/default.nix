@@ -20,5 +20,8 @@ symlinkJoin {
     fullPkgs.xdg-ninja
     fullPkgs.just
     fullPkgs.fzf
+    fullPkgs.bat
+    fullPkgs.less
+    fullPkgs.bash
   ];
 }

@@ -1,4 +1,10 @@
-{ symlinkJoin, inputs, system, lib, ... }@pkgs:
+{
+  symlinkJoin,
+  inputs,
+  system,
+  lib,
+  ...
+}@pkgs:
 let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
 in
@@ -13,5 +19,6 @@ symlinkJoin {
     fullPkgs.fastfetch
     fullPkgs.xdg-ninja
     fullPkgs.just
+    fullPkgs.fzf
   ];
 }

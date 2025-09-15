@@ -1,7 +1,8 @@
-{ inputs
-, lib
-, system
-, ...
+{
+  inputs,
+  lib,
+  system,
+  ...
 }@pkgs:
 let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
@@ -14,7 +15,10 @@ let
   clipboard = import ../../../lib/clipboard.nix { pkgs = fullPkgs; };
 
   # Binaries we ensure are on PATH inside Kak's %sh blocks
-  depsBinPath = lib.makeBinPath [ fullPkgs.lua fullPkgs.luajit ];
+  depsBinPath = lib.makeBinPath [
+    fullPkgs.lua
+    fullPkgs.luajit
+  ];
 
   # Package Kakoune config + local addons under share/kak
   config = fullPkgs.runCommand "kakoune-config" { } ''
@@ -89,6 +93,7 @@ let
           basePackage = kakouneLauncher;
           extraPackages = [
             fullPkgs.kakoune
+            fullPkgs.kakoune-cr
             config
             kakInNewTerm
             kakouneDesktop

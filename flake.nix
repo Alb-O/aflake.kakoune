@@ -21,7 +21,7 @@
     { flakelight, ... }@inputs:
     flakelight ./. {
       inherit inputs;
-      # packages are auto-loaded from ./nix/packages
+      # Packages are auto-loaded from ./nix/packages
       # Additionally, define aggregate outputs here to avoid auto-loader quirks.
       packages.default =
         pkgs:
@@ -50,4 +50,8 @@
         pkgs:
         (import ./nix/lib/lsp.nix { pkgs = pkgs; }) ++ (import ./nix/lib/formatters.nix { pkgs = pkgs; });
     };
+  # No dirty git warnings
+  nixConfig = {
+    warn-dirty = false;
+  };
 }

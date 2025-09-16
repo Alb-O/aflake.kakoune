@@ -11,7 +11,7 @@
 ,
 }:
 let
-  version = "0.9.1";
+  version = "0.9.9";
 
   # Target mapping for bun --target
   bunTarget =
@@ -27,7 +27,7 @@ let
     repo = "opencode";
     rev = "v${version}";
     # Upstream source tarball hash
-    hash = "sha256-ZMHEvcMpMgwj9Tzb788xUF9nnPLnrSlr6LzcUg7+MDg=";
+    hash = "sha256-VHg5yZeU380ggCUwgq2yUD4jV0IiacsIDlcoUjZzuFA=";
   };
 
   # Build TUI (Go) first
@@ -37,7 +37,7 @@ let
 
     modRoot = "packages/tui";
     # Go modules vendor hash
-    vendorHash = "sha256-KfK3qLt05J2N1DC25E2xyViR+aXsXQ/gEXZoiQ95UuM=";
+    vendorHash = "sha256-H+TybeyyHTbhvTye0PCDcsWkcN8M34EJ2ddxyXEJkZI=";
     subPackages = [ "cmd/opencode" ];
     env.CGO_ENABLED = 0;
     ldflags = [
@@ -76,7 +76,7 @@ let
     '';
     dontFixup = true;
     # Node modules fixed-output hash
-    outputHash = "sha256-4jaHwtdWxvFsnTVq2UFmLT4SxKi6Ksx3SXaSJ7wGCho=";
+    outputHash = "sha256-fGf2VldMlxbr9pb3B6zVL+fW1S8bRjefJW+jliTO73A=";
     outputHashMode = "recursive";
   };
 in

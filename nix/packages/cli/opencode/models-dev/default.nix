@@ -5,7 +5,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "https://models.dev/api.json";
-    sha256 = "sha256-bqMq/wj5XP4L0mtVipJUIvzwsz75ODaA++U3RdrQlrg=";
+    sha256 = "sha256-VuEhlqbbsAr2uX/QFNUWqsr5IbgThcdDKptOM2DL+UQ=";
   };
 
   dontUnpack = true;

@@ -7,10 +7,11 @@
 , makeBinaryWrapper
 , writableTmpDirAsHomeHook
 , models-dev
+, python3
 ,
 }:
 let
-  version = "0.7.3";
+  version = "0.9.1";
 
   # Target mapping for bun --target
   bunTarget =
@@ -26,7 +27,7 @@ let
     repo = "opencode";
     rev = "v${version}";
     # Upstream source tarball hash
-    hash = "sha256-lC56s/dmsUc/F4ytA6aOewmybPN+JL+nH1hrAEgQ1Tw=";
+    hash = "sha256-ZMHEvcMpMgwj9Tzb788xUF9nnPLnrSlr6LzcUg7+MDg=";
   };
 
   # Build TUI (Go) first
@@ -36,7 +37,7 @@ let
 
     modRoot = "packages/tui";
     # Go modules vendor hash
-    vendorHash = "sha256-de5FtS7iMrbmoLlIjdfrxs2OEI/f1dfU90GIJbvdO50=";
+    vendorHash = "sha256-KfK3qLt05J2N1DC25E2xyViR+aXsXQ/gEXZoiQ95UuM=";
     subPackages = [ "cmd/opencode" ];
     env.CGO_ENABLED = 0;
     ldflags = [
@@ -57,12 +58,14 @@ let
     nativeBuildInputs = [
       bun
       writableTmpDirAsHomeHook
+      stdenv.cc
+      python3
     ];
     dontConfigure = true;
     buildPhase = ''
       runHook preBuild
       export BUN_INSTALL_CACHE_DIR=$(mktemp -d)
-      bun install --filter=opencode --force --frozen-lockfile --no-progress --ignore-scripts || bun install --filter=opencode --force --frozen-lockfile --no-progress
+      bun install --filter=opencode --force --frozen-lockfile --no-progress --ignore-scripts || bun install --filter=opencode --force --no-progress --ignore-scripts
       runHook postBuild
     '';
     installPhase = ''
@@ -73,7 +76,7 @@ let
     '';
     dontFixup = true;
     # Node modules fixed-output hash
-    outputHash = "sha256-bnkXVlwrfsEWSVjeMajAFhviGFG8KCZnaml/LLx/2lo=";
+    outputHash = "sha256-4jaHwtdWxvFsnTVq2UFmLT4SxKi6Ksx3SXaSJ7wGCho=";
     outputHashMode = "recursive";
   };
 in

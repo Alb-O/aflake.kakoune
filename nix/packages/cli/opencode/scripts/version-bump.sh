@@ -14,8 +14,8 @@ else
 fi
 
 # Paths inside kakoune flake
-pkg_file="$root_dir/nix/packages/opencode/opencode-git.nix"
-models_dev_file="$root_dir/nix/packages/opencode/models-dev/default.nix"
+pkg_file="$root_dir/nix/packages/cli/opencode/opencode-git.nix"
+models_dev_file="$root_dir/nix/packages/cli/opencode/models-dev/default.nix"
 
 version="${1:-latest}"
 
@@ -65,7 +65,7 @@ while ((tries < max_tries)); do
   set +e
   # Build the unwrapped package (closest to the raw source) so
   # fixed-output hash mismatches are surfaced and can be patched.
-  out=$(nix build .#opencode 2>&1)
+  out=$(nix build --impure --expr "with import <nixpkgs> {}; callPackage $root_dir/nix/packages/cli/opencode/opencode-git.nix { models-dev = callPackage $root_dir/nix/packages/cli/opencode/models-dev {}; }" 2>&1)
   code=$?
   set -e
 
@@ -92,7 +92,7 @@ while ((tries < max_tries)); do
       sed -i "0,/vendorHash = \"sha256-[^\"]*\"/s|vendorHash = \"sha256-[^\"]*\"|vendorHash = \"$got\"|" "$pkg_file"
       echo "Successfully updated vendorHash -> $got" >&2
       continue
-    elif echo "$out" | grep -q "hash mismatch.*ai-tools-models-dev"; then
+    elif echo "$out" | grep -q "hash mismatch.*api\.json\.drv"; then
       # Update models.dev API fixed-output sha in models-dev.nix
       sed -i "0,/sha256 = \"sha256-[^\"]*\"/s|sha256 = \"sha256-[^\"]*\"|sha256 = \"$got\"|" "$models_dev_file"
       echo "Successfully updated models-dev sha256 -> $got" >&2

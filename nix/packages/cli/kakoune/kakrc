@@ -1,7 +1,6 @@
 ################################################################################
 # Options
 
-# use the Gruvdark colorscheme from this flake
 colorscheme gruvdark
 # show matching symbols
 add-highlighter -override global/ show-matching
@@ -22,7 +21,7 @@ hook global InsertChar \t %{ try %{
 hook global BufWritePre .* %{ try %{ execute-keys -draft \%s\h+$<ret>d } }
 
 # line numbers on by default (named highlighter for easy toggling)
-hook global WinCreate .* %{ add-highlighter -override window/number-lines number-lines }
+hook global WinCreate .* %{ add-highlighter -override window/number-lines number-lines -hlcursor }
 
 # use ripgrep as regex search tool
 set global grepcmd 'rg --column'
@@ -33,6 +32,9 @@ alias global qa kill
 hook global ModuleLoaded kitty %{
   set global kitty_window_type 'os-window'
 }
+
+# goodbye clippy
+set-option global ui_options terminal_assistant=none
 
 ################################################################################
 # load plugins
@@ -58,6 +60,14 @@ evaluate-commands %sh{
 ################################################################################
 # Plugin configuration
 
+# Crosshairs: highlight the current line by default (column highlight disabled).
+try %{
+  set-option global highlight_current_line true
+  set-option global highlight_current_column false
+  crosshairs-change-hooks
+  crosshairs-update
+}
+
 # Enable language server
 eval %sh{kak-lsp --kakoune -s $kak_session}
 # Enable LSP for common languages
@@ -67,15 +77,6 @@ hook global WinSetOption filetype=(rust|nix|javascript|typescript|tsx|jsx|markdo
 set global lsp_file_watch_support true
 
 set global lsp_insert_spaces true
-
-# Prefer luajit for Luar (peneira performance)
-set-option global luar_interpreter luajit
-
-# Peneira appearance: highlight matched characters in red
-set-face global PeneiraMatches red
-
-# Peneira should use ripgrep for files commands
-set-option global peneira_files_command "rg --files"
 
 # Inline diagnostics (shows diagnostics at line end)
 lsp-inlay-diagnostics-enable global
@@ -160,7 +161,16 @@ map global normal <c-l> ': enter-user-mode lsp<ret>'
 map global normal <c-t> '<esc>: connect terminal elvish<ret>'
 
 ################################################################################
-# Peneira user menu
+# Peneira
+
+# Prefer luajit for Luar (peneira performance)
+set-option global luar_interpreter luajit
+
+# Peneira appearance: highlight matched characters in red
+set-face global PeneiraMatches red
+
+# Peneira should use ripgrep for files commands
+set-option global peneira_files_command "rg --files"
 
 try %{declare-user-mode peneira } catch %{ echo -markup "{Error}Can't declare mode 'peneira' - already exists" }
 map global user -docstring "fuzzy pick" 'f' ': enter-user-mode peneira<ret>'
@@ -169,22 +179,6 @@ map global peneira -docstring "local files" 'l' ': peneira-local-files<ret>'
 map global peneira -docstring "lines" 'L' ': peneira-lines<ret>'
 map global peneira -docstring "symbols" 's' ': peneira-symbols<ret>'
 map global peneira -docstring "MRU files" 'm' ': peneira-mru<ret>'
-
-################################################################################
-# Highlight the word under the cursor
-
-declare-option -hidden regex curword
-set-face global CurWord default,rgb:4a4a4a
-
-hook global NormalIdle .* %{
- eval -draft %{ try %{
-   exec <space><a-i>w <a-k>\A\w+\z<ret>
-   set-option buffer curword "\b\Q%val{selection}\E\b"
- } catch %{
-   set-option buffer curword ''
- } }
-}
-add-highlighter global/ dynregex '%opt{curword}' 0:CurWord
 
 ################################################################################
 # Helper commands

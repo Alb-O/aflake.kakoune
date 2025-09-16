@@ -6,30 +6,34 @@ local config = {}
 -- Multiplexing via a fixed unix socket
 --
 -- Use a deterministic socket path so both the GUI and `wezterm cli`
--- target the same instance reliably. The wrapper sets WEZTERM_UNIX_SOCKET
--- to the same path; see wrapped.nix.
+-- target the same instance reliably. The wrapper exports WEZTERM_UNIX_SOCKET
+-- when connecting to an existing mux; see wrapped.nix.
 do
-  local runtime = os.getenv("XDG_RUNTIME_DIR")
-  local user = os.getenv("USER") or "user"
-  local host = wezterm.hostname()
-  local socket_path
+	local runtime = os.getenv("XDG_RUNTIME_DIR")
+	local user = os.getenv("USER") or "user"
+	local host = wezterm.hostname()
+	local socket_path
 
-  if runtime and #runtime > 0 then
-    socket_path = string.format("%s/wezterm-%s-%s.sock", runtime, user, host)
-  else
-    -- Fallback if XDG_RUNTIME_DIR is not set; avoid needing parent dirs
-    socket_path = string.format("%s/.wezterm-%s.sock", wezterm.home_dir, host)
-  end
+	if runtime and #runtime > 0 then
+		socket_path = string.format("%s/wezterm-%s-%s.sock", runtime, user, host)
+	else
+		-- Fallback if XDG_RUNTIME_DIR is not set; avoid needing parent dirs
+		socket_path = string.format("%s/.wezterm-%s.sock", wezterm.home_dir, host)
+	end
 
-  config.unix_domains = {
-    {
-      name = "unix",
-      socket_path = socket_path,
-    },
-  }
+	config.unix_domains = {
+		{
+			name = "unix",
+			socket_path = socket_path,
+		},
+	}
 
-  -- On startup, connect the GUI to the unix mux domain
-  config.default_gui_startup_args = { "connect", "unix" }
+	-- The wrapper marks the first invocation (or failed mux probing) with
+	-- WEZTERM_DISABLE_STARTUP_CONNECT so the GUI boots a fresh server instead
+	-- of trying to connect to a socket that does not exist yet.
+	if not os.getenv("WEZTERM_DISABLE_STARTUP_CONNECT") then
+		config.default_gui_startup_args = { "connect", "unix" }
+	end
 end
 
 config.font = wezterm.font_with_fallback({

@@ -16,10 +16,14 @@ let
     # For each monitor, create a background terminal using kitten panel
     for MONITOR in $MONITORS; do
         # Use kitten panel to spawn background terminal
-        ${pkgs.kitty}/bin/kitten panel --output-name $MONITOR --focus-policy exclusive --detach=yes --edge=background
+        ${pkgs.kitty}/bin/kitten panel \
+            --output-name "$MONITOR" \
+            --focus-policy not-allowed \
+            --grab-keyboard=no \
+            --detach=yes \
+            --edge=background
     done
     wait
   '';
 in
 setupScript
-

@@ -1,11 +1,5 @@
 input {
     keyboard {
-        xkb {
-            layout ""
-            model ""
-            rules ""
-            variant ""
-        }
         repeat-delay 200
         repeat-rate 35
         track-layout "global"

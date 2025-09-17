@@ -16,6 +16,8 @@ let
     install -Dm444 ${./config.kdl} "$outdir/config.kdl"
   '';
 
+  setupBackground = import ../gui/setup-background-terminals pkgs;
+
   # Simple launcher that delegates to upstream niri
   niriLauncher = fullPkgs.writeShellScriptBin "niri" ''
     exec -a "$0" "${fullPkgs.niri}/bin/niri" "$@"
@@ -32,6 +34,7 @@ let
           extraPackages = [
             fullPkgs.niri
             config
+            setupBackground
           ];
           env = {
             # Point Niri directly at the config.kdl file
@@ -47,4 +50,3 @@ wm.config.wrappers.niri.wrapped.overrideAttrs (old: {
     providedSessions = [ "niri" ];
   };
 })
-

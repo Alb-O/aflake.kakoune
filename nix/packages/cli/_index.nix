@@ -10,5 +10,6 @@
   env = import ./env pkgs;
   xdg-terminal = import ./xdg-terminal pkgs;
   zk = import ./zk pkgs;
+  yazi = import ./yazi pkgs;
   wget = import ./wget pkgs;
 }

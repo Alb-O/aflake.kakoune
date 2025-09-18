@@ -36,7 +36,7 @@ pkgs.writeShellApplication {
       KITTY_WRAPPER_INSTANCE_GROUP="$instance_group" \
       ${kittyWrapped}/bin/kitty +kitten panel \
         --output-name "$monitor" \
-        --focus-policy=on-demand \
+        --focus-policy=exclusive \
         --edge=background \
         --detach \
         -- "$@"

@@ -11,7 +11,7 @@
 ,
 }:
 let
-  version = "0.9.9";
+  version = "0.10.0";
 
   # Target mapping for bun --target
   bunTarget =
@@ -27,7 +27,7 @@ let
     repo = "opencode";
     rev = "v${version}";
     # Upstream source tarball hash
-    hash = "sha256-VHg5yZeU380ggCUwgq2yUD4jV0IiacsIDlcoUjZzuFA=";
+    hash = "sha256-9zHKtOcjVeAnFprG6eAQESv7rvWOLxbbJdexd0PsFz0=";
   };
 
   # Build TUI (Go) first

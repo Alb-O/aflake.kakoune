@@ -1,14 +1,17 @@
-{ inputs
-, system
-, lib
-, ...
-}@pkgs:
+{
+  inputs,
+  system,
+  lib,
+  ...
+}:
 let
   fullPkgs = inputs.nixpkgs.legacyPackages.${system};
   selectedPlugins = [
     "smart-enter.yazi"
     "git.yazi"
     "smart-filter.yazi"
+    "no-status.yazi"
+    "full-border.yazi"
   ];
 
   pluginSource = fullPkgs.fetchFromGitHub {
